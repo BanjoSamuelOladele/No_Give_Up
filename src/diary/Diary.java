@@ -12,6 +12,8 @@ public class Diary {
         userName = username;
         this.password = password;
     }
+    public String getPassword(){return password;}
+    public String getUserName(){return userName;}
     public boolean isLocked() {return isLocked;}
     public void unlock(String password) {
         if (this.password.equals(password)) isLocked = false;
@@ -26,7 +28,7 @@ public class Diary {
         return entries.size();
     }
     private Entry findEntryByTitleInEntry(String title){
-        for (Entry entry : entries) if (entry.getTitle().equals(title)) return entry;
+        for (Entry entry : entries) if (entry.getTitle().equalsIgnoreCase(title)) return entry;
         throw new NullPointerException("Entry " + title + " does not exist");
     }
     public String searchEntryByTitle(String title) {
