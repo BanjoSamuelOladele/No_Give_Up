@@ -6,21 +6,18 @@ import java.util.List;
 public class Diary {
     private String password;
     private List<Entry> entries = new ArrayList<>();
-    private int size;
     private boolean isLocked = true;
+    private String userName;
     public Diary(String username, String password) {
+        userName = username;
         this.password = password;
     }
-    public boolean isLocked() {
-        return isLocked;
-    }
+    public boolean isLocked() {return isLocked;}
     public void unlock(String password) {
         if (this.password.equals(password)) isLocked = false;
         else throw new IllegalArgumentException("Password does not match");
     }
-    public void lock() {
-        isLocked = true;
-    }
+    public void lock() {isLocked = true;}
     public void createEntry(String title, String body) {
         Entry entry = new Entry(title, body);
         entries.add(entry);
