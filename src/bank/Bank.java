@@ -6,6 +6,7 @@ import java.util.List;
 
 public class Bank {
     private List<Account> accounts = new ArrayList<>();
+    private String accountNumber;
     public void registerCustomer(String firstName, String lastName, String password) {
         emptyEntry(firstName);
         emptyEntry(lastName);
@@ -16,16 +17,27 @@ public class Bank {
         account.setAccountNumber(accountNumber);
         accounts.add(account);
     }
+    public String getAccountNumber(){
+        return accountNumber;
+    }
     private String generateAccountNumber(){
-        return "112233445" + accounts.size();
+        accountNumber = "112233445" + accounts.size();
+        if (accountNumber.length() > 10) accountNumber = accountNumber.substring(1);
+        return accountNumber;
     }
     public int getSizeOfAccounts() {
         return accounts.size();
     }
     public void depositToAccount(String accountNumber, BigDecimal amount) {
         stringContains(accountNumber);
+        checkAmount(amount);
         Account account = findAccountByAccountNumber(accountNumber);
         account.deposit(amount);
+    }
+    private void checkAmount(BigDecimal amount){
+       // for (char a: amount.toString().toCharArray()){if (!Character.isDigit(a)) throw new NumberFormatException("Amount Contains Alphabet(s)");}
+        String stringAmount = amount.toString();
+        for (char stringAmt : stringAmount.toCharArray()) if (!Character.isDigit(stringAmt)) throw new NumberFormatException("Amount Contains Alphabet(s)");
     }
     private void lengthOfPassword(String inputs){
         if (inputs.length() != 4) throw new IllegalArgumentException("Password must be 4 digits long");
@@ -47,9 +59,22 @@ public class Bank {
         throw new NullPointerException("Account does not exist");
     }
     public BigDecimal checkAccountBalance(String accountNumber, String password) {
+        stringContains(password);
         lengthOfPassword(password);
         stringContains(accountNumber);
         Account account = findAccountByAccountNumber(accountNumber);
         return account.checkBalance(password);
+    }
+    public void withdrawFromAccount(String accountNumber, BigDecimal amount, String password) {
+        stringContains(accountNumber);
+        stringContains(password);
+        lengthOfPassword(password);
+        checkAmount(amount);
+        Account account = findAccountByAccountNumber(accountNumber);
+        account.withdraw(password,amount);
+    }
+    public void transfer(String senderAccountNumber, String receiverAccountNUmber, BigDecimal amount, String password) {
+        withdrawFromAccount(senderAccountNumber, amount,password);
+        depositToAccount(receiverAccountNUmber,amount);
     }
 }
