@@ -40,4 +40,9 @@ public class Diary {
         Entry entry = findEntryByTitleInEntry(title);
         entries.remove(entry);
     }
+    public void updateEntryByTitle(String title, String body) {
+        Entry entry = findEntryByTitleInEntry(title);
+        entry.setBody(body);
+        entries.add(entry);
+    }
 }

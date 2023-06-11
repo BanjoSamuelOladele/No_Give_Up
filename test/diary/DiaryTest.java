@@ -59,4 +59,10 @@ public class DiaryTest {
         diary.createEntry("title","body");
         assertThrows(NullPointerException.class, ()->diary.deleteEntry("MyBook"));
     }
+    @Test public void diaryCanUpdateBodyOfAnEntryThroughTitle(){
+        diary.createEntry("title","Ola");
+        assertEquals("Ola", diary.searchEntryByTitle("title"));
+        diary.updateEntryByTitle("title", "body");
+        assertEquals("body", diary.searchEntryByTitle("title"));
+    }
 }
