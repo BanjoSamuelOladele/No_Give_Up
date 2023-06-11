@@ -25,4 +25,7 @@ public class DiaryTest {
         assertThrows(IllegalArgumentException.class, ()-> diary.unlock("dele"));
         assertTrue(diary.isLocked());
     }
+    @Test public void diaryCanCreateEntry(){
+
+    }
 }
