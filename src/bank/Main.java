@@ -15,6 +15,7 @@ public class Main {
     private static void entryPoint() throws InterruptedException {
         welcomeNote();
         period_OfThe_Day();
+
         displayDateAndTimeOfTheDay();
         bankingFirm();
     }
