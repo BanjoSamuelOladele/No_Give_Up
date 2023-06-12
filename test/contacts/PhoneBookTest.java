@@ -45,7 +45,7 @@ public class PhoneBookTest {
     @Test public void phoneBookCannotCreateContactsWithWrongPassword(){
         assertTrue(phoneBook.isLocked());
         assertThrows(IncorrectPasswordException.class, ()->phoneBook.unlock("kkkk"));
-        phoneBook.createContact("FirstName", "LastName", "08063587905");
+        assertThrows(IncorrectPasswordException.class, ()->phoneBook.createContact("FirstName", "LastName", "08063587905"));
         assertEquals(0, phoneBook.sizeOfContacts());
     }
     @Test public void phoneBookCanSearchContactThroughPhoneNumber(){
@@ -72,5 +72,14 @@ public class PhoneBookTest {
         assertEquals(2, phoneBook.sizeOfContacts());
         String result = phoneBook.searchContact("firstName");
         assertEquals("08057891707", result);
+    }
+    @Test public void phoneBookThrowsExceptionWhenTheSearchDoesNotExist(){
+        assertTrue(phoneBook.isLocked());
+        phoneBook.unlock("password");
+        phoneBook.createContact("Dele", "Oladele", "08063587905");
+        phoneBook.createContact("Sam", "Samuel", "08057891707");
+        assertEquals(2, phoneBook.sizeOfContacts());
+        assertThrows(PhoneNumberDoesNotExistException.class, ()->phoneBook.searchContact("080635879056"));
+        assertThrows(NameDoesNotExistException.class, ()->phoneBook.searchContact("sir"));
     }
 }

@@ -22,27 +22,33 @@ public class PhoneBook {
     public void createContact(String firstName, String lastName, String phoneNumber) {
         Contact contact = new Contact(firstName, lastName, phoneNumber);
         if (!isLocked) contacts.add(contact);
+        else throw new IncorrectPasswordException("Password is Incorrect.");
     }
     private Contact  findByPhoneNumber(String phoneNumber){
         for (Contact contact : contacts) if (contact.getPhoneNumber().equals(phoneNumber))return contact;
-        return null;
+        throw new PhoneNumberDoesNotExistException("Phone Number Not Found.");
     }
     private String searchNumberByPhoneNumber(String phoneNumber) {
         Contact contact = findByPhoneNumber(phoneNumber);
-        assert contact != null;
         return contact.getFirstName() +" " + contact.getLastName();
     }
     private Contact findByName(String firstName){
-        for (Contact contact : contacts) if (contact.getFirstName().equals(firstName)) return contact;
-        return null;
+        for (Contact contact : contacts) if (contact.getFirstName().equalsIgnoreCase(firstName)) return contact;
+        throw new NameDoesNotExistException(firstName +" not found");
     }
-    public String searchContactByName(String firstName) {
+    private String searchContactByName(String firstName) {
         Contact contact = findByName(firstName);
-        assert contact != null;
         return contact.getPhoneNumber();
     }
-    public String searchContact(String input){
+    private String checkIfIt(String input){
         for (Character in : input.toCharArray()) if (Character.isDigit(in)) return searchNumberByPhoneNumber(input);
         return searchContactByName(input);
+    }
+    public String searchContact(String input){
+        if (!isLocked) {
+            return checkIfIt(input);
+            //return searchContactByName(input);
+            }
+        throw new IncorrectPasswordException("Password Is Incorrect.");
     }
 }
