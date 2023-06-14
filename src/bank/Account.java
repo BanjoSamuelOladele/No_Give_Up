@@ -1,11 +1,15 @@
 package bank;
 import java.math.BigDecimal;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+
 public class Account {
     private String firstName;
     private String lastName;
     private String password;
     private BigDecimal balance = BigDecimal.ZERO;
     private String accountNumber;
+    private String timeAndDate;
     public Account(String firstName, String lastName, String password) {
         this.firstName = firstName;
         this.lastName = lastName;
@@ -40,5 +44,9 @@ public class Account {
     }
     public String  getAccountNumber() {
         return accountNumber;
+    }
+    public String getTimeAndDate(){return timeAndDate;}
+    public void setCreatedTimeAndDate(String timeAndDate) {
+        this.timeAndDate = timeAndDate;
     }
 }

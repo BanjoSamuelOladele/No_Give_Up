@@ -1,12 +1,15 @@
 package bank;
 
 import java.math.BigDecimal;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 
 public class Bank {
     private List<Account> accounts = new ArrayList<>();
     private String accountNumber;
+    private LocalDateTime dateAndTimeCreated;
     public void registerCustomer(String firstName, String lastName, String password) {
         emptyEntry(firstName);
         emptyEntry(lastName);
@@ -15,7 +18,16 @@ public class Bank {
         String accountNumber = generateAccountNumber();
         Account account = new Account(firstName, lastName, password);
         account.setAccountNumber(accountNumber);
+        String timeAndDate = String.valueOf(dateAndTimeOfAccountCreation());
+        account.setCreatedTimeAndDate(timeAndDate);
         accounts.add(account);
+    }
+    public String getTimeAndDateCreated(){
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("EE hh:mm:ssa");
+        return formatter.format(dateAndTimeCreated);
+    }
+    private LocalDateTime dateAndTimeOfAccountCreation(){
+        return dateAndTimeCreated = LocalDateTime.now();
     }
     public String getAccountNumber(){
         return accountNumber;

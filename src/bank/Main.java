@@ -177,6 +177,7 @@ public class Main {
             encounterException(exception.getMessage());
         }
         displayMessage("Account Number is: " + bank.getAccountNumber()+ "\n");
+        displayMessage("Date created is: " + bank.getTimeAndDateCreated()+"\n");
         bankingServices();
     }
     private static void generateDelay() throws InterruptedException {
