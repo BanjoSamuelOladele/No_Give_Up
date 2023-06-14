@@ -34,7 +34,10 @@ public class Main {
         switch (choice.charAt(0)){
             case '1' -> registerNewCustomer();
             case '2' -> bankingServices();
-            case '3' -> System.exit(0);
+            case '3' -> {
+                displayMessage("odaboo");
+                System.exit(0);
+            }
             default -> bankingFirm();
         }
     }
@@ -56,7 +59,10 @@ public class Main {
             case '3' : transferring();
             case '4' : checkBalance();
             case '0' : bankingFirm();
-            case '9' : System.exit(99);
+            case '9' : {
+                displayMessage("odaboo");
+                System.exit(99);
+            }
             default  : bankingServices();
         }
     }
