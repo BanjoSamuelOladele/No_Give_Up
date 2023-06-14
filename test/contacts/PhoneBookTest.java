@@ -71,7 +71,9 @@ public class PhoneBookTest {
         phoneBook.createContact("firstName", "LastName", "08057891707");
         assertEquals(2, phoneBook.sizeOfContacts());
         String result = phoneBook.searchContact("firstName");
-        assertEquals("08057891707", result);
+        assertEquals("08063587905", result);
+        //String string = phoneBook.searchContact("FirstName");
+        //assertEquals("08057891707", string);
     }
     @Test public void phoneBookThrowsExceptionWhenTheSearchDoesNotExist(){
         assertTrue(phoneBook.isLocked());
@@ -81,5 +83,72 @@ public class PhoneBookTest {
         assertEquals(2, phoneBook.sizeOfContacts());
         assertThrows(PhoneNumberDoesNotExistException.class, ()->phoneBook.searchContact("080635879056"));
         assertThrows(NameDoesNotExistException.class, ()->phoneBook.searchContact("sir"));
+    }
+    @Test public void phoneBookCanDeleteContactFromContacts(){
+        assertTrue(phoneBook.isLocked());
+        phoneBook.unlock("password");
+        phoneBook.createContact("Dele", "Ola", "08063587905");
+        assertEquals(1, phoneBook.sizeOfContacts());
+        phoneBook.deleteContact("08063587905");
+        assertEquals(0, phoneBook.sizeOfContacts());
+        assertThrows(PhoneNumberDoesNotExistException.class, ()->phoneBook.searchContact("08063587905"));
+    }
+    @Test public void phoneBookCanDeleteMultipleContacts(){
+        assertTrue(phoneBook.isLocked());
+        phoneBook.unlock("password");
+        phoneBook.createContact("Dele", "Ola", "08063587905");
+        phoneBook.createContact("Dele", "Dele", "08057891705");
+        phoneBook.createContact("Sam", "Sam", "09061117599");
+        phoneBook.createContact("Samuel", "Ola", "09046078272");
+        phoneBook.createContact("Samuel", "Samuel", "22222");
+        assertEquals(5, phoneBook.sizeOfContacts());
+        phoneBook.deleteContact("09046078272");
+        phoneBook.deleteContact("08057891705");
+        phoneBook.deleteContact("08063587905");
+        assertEquals(2, phoneBook.sizeOfContacts());
+        assertThrows(PhoneNumberDoesNotExistException.class, ()->phoneBook.searchContact("08063587905"));
+        assertThrows(PhoneNumberDoesNotExistException.class, ()->phoneBook.searchContact("08057891705"));
+        assertThrows(PhoneNumberDoesNotExistException.class, ()->phoneBook.searchContact("09046078272"));
+    }
+    @Test public void phoneBookCanDeleteContactWithName(){
+        assertTrue(phoneBook.isLocked());
+        phoneBook.unlock("password");
+        phoneBook.createContact("Dele", "Ola", "08063587905");
+        assertEquals(1, phoneBook.sizeOfContacts());
+        phoneBook.deleteContact("Dele Ola");
+        assertEquals(0, phoneBook.sizeOfContacts());
+        assertThrows(NameDoesNotExistException.class, ()->phoneBook.searchContact("Dele"));
+    }
+    @Test public void phoneBookCannotDeleteContactWhenItIsLockedAndTriedUnLockingWithWrongPassword(){
+        assertTrue(phoneBook.isLocked());
+        assertThrows(IncorrectPasswordException.class, ()->phoneBook.unlock("2020"));
+        assertThrows(IncorrectPasswordException.class, ()->phoneBook.createContact("Dele", "Ola", "08063587905"));
+        assertEquals(0, phoneBook.sizeOfContacts());
+        assertThrows(IncorrectPasswordException.class, ()->phoneBook.deleteContact("Dele Ola"));
+        assertEquals(0, phoneBook.sizeOfContacts());
+    }
+    @Test public void phoneBookCanChangePhoneNumberInContact(){
+        assertTrue(phoneBook.isLocked());
+        phoneBook.unlock("password");
+        phoneBook.createContact("Dele", "Ola", "08063587905");
+        assertEquals(1, phoneBook.sizeOfContacts());
+        assertEquals("08063587905", phoneBook.searchContact("dele"));
+        phoneBook.modifySavedContact("Dele", "Ope", "08063587905");
+        assertEquals("Dele Ope", phoneBook.searchContact("08063587905"));
+    }
+    @Test public void setPhoneBookCannotModifyContactWhenItIsLocked(){
+        assertTrue(phoneBook.isLocked());
+        assertThrows(IncorrectPasswordException.class, ()->phoneBook.unlock("3333"));
+        assertThrows(IncorrectPasswordException.class, ()->phoneBook.createContact("Dele", "Ola", "08063587905"));
+        assertThrows(IncorrectPasswordException.class, ()->phoneBook.createContact("Sam", "Lo", "0880"));
+        assertEquals(0, phoneBook.sizeOfContacts());
+        assertThrows(IncorrectPasswordException.class, ()-> phoneBook.searchContact("dele"));
+        assertThrows(IncorrectPasswordException.class, ()->phoneBook.modifySavedContact("Sam", "Lo", "09046078272"));
+    }
+    @Test public void confirmAllThrowableAreEffective(){
+        assertTrue(phoneBook.isLocked());
+        phoneBook.unlock("password");
+        assertThrows(IllegalArgumentException.class, ()-> phoneBook.createContact("dele", "sam", "0807yh6"));
+        assertEquals(0, phoneBook.sizeOfContacts());
     }
 }

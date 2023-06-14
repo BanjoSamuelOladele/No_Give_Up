@@ -13,11 +13,15 @@ public class Main {
         entryPoint();
     }
     private static void entryPoint() throws InterruptedException {
-        welcomeNote();
-        period_OfThe_Day();
-
-        displayDateAndTimeOfTheDay();
-        bankingFirm();
+        try {
+            welcomeNote();
+            period_OfThe_Day();
+            displayDateAndTimeOfTheDay();
+            bankingFirm();
+        }catch (StringIndexOutOfBoundsException exception){
+            displayMessage("You have not entered any input.");
+            entryPoint();
+        }
     }
     private static void bankingFirm() throws InterruptedException {
         displayMessage("""

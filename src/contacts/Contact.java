@@ -12,4 +12,9 @@ public class Contact {
     public String getPhoneNumber(){return phoneNumber;}
     public String getFirstName(){return firstName;}
     public String getLastName(){return lastName;}
+    public void modify(String firstName, String lastName, String phoneNumber) {
+        this.lastName = lastName;
+        this.firstName = firstName;
+        this.phoneNumber = phoneNumber;
+    }
 }
