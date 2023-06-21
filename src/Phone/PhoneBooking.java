@@ -10,7 +10,7 @@ import java.util.List;
 public class PhoneBooking {
     private boolean isLocked = true;
     private String password;
-    private String userName;
+    private final String userName;
     private List<Contacting>contactings;
     private int keyValue;
     private List<String> searchResult;
@@ -29,6 +29,7 @@ public class PhoneBooking {
         else throw new IllegalArgumentException("Password or Username does not exist");
     }
     public void lock() {isLocked = true;}
+    public String getUserName(){return userName;}
     public void createContact(String firstName, String lastName, String phoneNumber) {
         checkPhoneNumber(phoneNumber);
         checkLengthOfPhoneNumber(phoneNumber);
