@@ -42,7 +42,7 @@ public class PhoneBookingTest {
         assertTrue(phoneBooking.isLocked());
         phoneBooking.unlock("password", "userName");
         assertFalse(phoneBooking.isLocked());
-        phoneBooking.createContact("firstName", "lastName", "08063587905");
+        phoneBooking.createContact("firstName", "lastName", "11111111111");
         assertEquals(1, phoneBooking.size());
     }
     @Test public void phoneBookCanCreateMultipleContacts(){
@@ -62,7 +62,7 @@ public class PhoneBookingTest {
         phoneBooking.createContact("firstName", "lastName", "08063587905");
         phoneBooking.createContact("FirstName", "lastName", "08063587905");
         assertEquals(2, phoneBooking.size());
-        phoneBooking.searchByName("firstName");
+        phoneBooking.searchContact("firstName");
         assertEquals(2, phoneBooking.searchSize());
         String result = "[FirstName lastName, firstName lastName]";
         assertEquals(result, phoneBooking.searchResult());
@@ -75,7 +75,7 @@ public class PhoneBookingTest {
         phoneBooking.createContact("FirstName", "lastName", "08063587905");
         phoneBooking.createContact("FirstName", "Dele", "08063587905");
         assertEquals(3, phoneBooking.size());
-        phoneBooking.searchByName("Dele");
+        phoneBooking.searchContact("Dele");
         assertEquals(1, phoneBooking.searchSize());
         String result = "[FirstName Dele]";
         assertEquals(result, phoneBooking.searchResult());
@@ -88,7 +88,7 @@ public class PhoneBookingTest {
         phoneBooking.createContact("FirstName", "lastName", "08063587905");
         phoneBooking.createContact("FirstName", "Dele", "08063587905");
         assertEquals(3, phoneBooking.size());
-        assertThrows(NullPointerException.class, ()->phoneBooking.searchByName("Tayo"));
+        assertThrows(NullPointerException.class, ()->phoneBooking.searchContact("Tayo"));
         assertEquals(0, phoneBooking.searchSize());
         assertThrows(NullPointerException.class,()->phoneBooking.searchResult());
     }
@@ -98,7 +98,7 @@ public class PhoneBookingTest {
         assertFalse(phoneBooking.isLocked());
         phoneBooking.createContact("firstName", "lastName", "08063587905");
         assertEquals(1, phoneBooking.size());
-        phoneBooking.searchByPhoneNumber("08063587905");
+        phoneBooking.searchContact("08063587905");
         assertEquals(1, phoneBooking.searchSize());
         assertEquals("[firstName lastName]", phoneBooking.searchResult());
     }
@@ -108,7 +108,7 @@ public class PhoneBookingTest {
         assertFalse(phoneBooking.isLocked());
         phoneBooking.createContact("firstName", "lastName", "08063587905");
         assertEquals(1, phoneBooking.size());
-        assertThrows(NullPointerException.class, ()->phoneBooking.searchByPhoneNumber("0806358790"));
+        assertThrows(NullPointerException.class, ()->phoneBooking.searchContact("0806358790"));
         assertEquals(0, phoneBooking.searchSize());
         assertThrows(NullPointerException.class,()->phoneBooking.searchResult());
     }
@@ -125,7 +125,7 @@ public class PhoneBookingTest {
         assertFalse(phoneBooking.isLocked());
         phoneBooking.createContact("firstName", "lastName", "08063587905");
         assertEquals(1, phoneBooking.size());
-        assertThrows(IllegalArgumentException.class, ()->phoneBooking.searchByPhoneNumber("0806358790y"));
+        assertThrows(IllegalArgumentException.class, ()->phoneBooking.searchContact("0806358790y"));
         assertEquals(0, phoneBooking.searchSize());
     }
     @Test public void searchCanBeMadeWithTheUniqueValue(){
@@ -134,8 +134,103 @@ public class PhoneBookingTest {
         assertFalse(phoneBooking.isLocked());
         phoneBooking.createContact("firstName", "lastName", "08063587905");
         assertEquals(1, phoneBooking.size());
-        phoneBooking.searchByUniqueKey(1);
-        assertEquals(1, phoneBooking.searchSize());
-        assertEquals("[firstName lastName 08063587905]",phoneBooking.searchResult());
+        String expected = """
+                lastName
+                firstName
+                08063587905
+                """;
+        assertEquals(expected, phoneBooking.searchByUniqueKey(1));
+    }
+    @Test public void searchByKeyValue() {
+        assertTrue(phoneBooking.isLocked());
+        phoneBooking.unlock("password", "userName");
+        assertFalse(phoneBooking.isLocked());
+        phoneBooking.createContact("firstName", "lastName", "08063587905");
+        phoneBooking.createContact("firstName", "lastName", "44444444444");
+        phoneBooking.createContact("firstName", "lastName", "08085678906");
+        phoneBooking.createContact("firstName", "lastName", "33333333333");
+        phoneBooking.createContact("firstName", "lastName", "20202020202");
+        assertEquals(5, phoneBooking.size());
+        String expected = """
+                lastName
+                firstName
+                08085678906
+                """;
+        assertEquals(expected, phoneBooking.searchByUniqueKey(3));
+    }
+    @Test public void phoneBookCanDeleteContact(){
+        assertTrue(phoneBooking.isLocked());
+        phoneBooking.unlock("password", "userName");
+        assertFalse(phoneBooking.isLocked());
+        phoneBooking.createContact("firstName", "lastName", "08063587905");
+        assertEquals(1, phoneBooking.size());
+        phoneBooking.deleteContactByUniqueNumber(1);
+        assertEquals(0, phoneBooking.size());
+        assertThrows(NullPointerException.class, ()->phoneBooking.searchByUniqueKey(1));
+        assertThrows(NullPointerException.class, ()-> phoneBooking.searchResult());
+    }
+    @Test public void phoneBookCanDeleteMultipleContacts(){
+        assertTrue(phoneBooking.isLocked());
+        phoneBooking.unlock("password", "userName");
+        assertFalse(phoneBooking.isLocked());
+        phoneBooking.createContact("firstName", "lastName", "08063587905");
+        phoneBooking.createContact("Dele", "Sam", "1111111111111");
+        phoneBooking.createContact("firstName", "lastName", "08063587905");
+        assertEquals(3, phoneBooking.size());
+        phoneBooking.deleteContactByUniqueNumber(1);
+        phoneBooking.deleteContactByUniqueNumber(3);
+        assertEquals(1, phoneBooking.size());
+        assertThrows(NullPointerException.class, ()->phoneBooking.searchByUniqueKey(1));
+        assertThrows(NullPointerException.class, ()-> phoneBooking.searchResult());
+        String expected = """
+                Sam
+                Dele
+                1111111111111
+                """;
+        assertEquals(expected, phoneBooking.searchByUniqueKey(2));
+    }
+    @Test public void phoneBookCanModifyContact(){
+        assertTrue(phoneBooking.isLocked());
+        phoneBooking.unlock("password", "userName");
+        assertFalse(phoneBooking.isLocked());
+        phoneBooking.createContact("firstName", "lastName", "08063587905");
+        phoneBooking.createContact("Dele", "Sam", "1111111111111");
+        phoneBooking.createContact("firstName", "lastName", "08063587905");
+        assertEquals(3, phoneBooking.size());
+        String edit = phoneBooking.modifyContact(1, "Ope","simen", "08063587905");
+        String expected = """
+                simen
+                Ope
+                08063587905
+                """;
+        assertEquals(expected, edit);
+    }
+    @Test public void phoneBookCanDisplayAllContacts(){
+        assertTrue(phoneBooking.isLocked());
+        phoneBooking.unlock("password", "userName");
+        assertFalse(phoneBooking.isLocked());
+        phoneBooking.createContact("firstName", "lastName", "08063587905");
+        phoneBooking.createContact("Dele", "Sam", "1111111111111");
+        phoneBooking.createContact("firstName", "lastName", "08063587905");
+        String showAll = phoneBooking.showContacts();
+        String expected = """
+                0\tlastName
+                firstName
+                08063587905
+                1\tSam
+                Dele
+                1111111111111
+                2\tlastName
+                firstName
+                08063587905
+                """;
+        assertEquals(expected, showAll);
+    }
+    @Test public void canNotTakePhoneNumberLessThan11AndGreaterthan13(){
+        assertTrue(phoneBooking.isLocked());
+        phoneBooking.unlock("password", "userName");
+        assertFalse(phoneBooking.isLocked());
+        assertThrows(IllegalArgumentException.class, ()->phoneBooking.createContact("firstName", "lastName", "8063587905"));
+        assertThrows(IllegalArgumentException.class,()->phoneBooking.createContact("firstName", "lastName", "23408063587905"));
     }
 }
