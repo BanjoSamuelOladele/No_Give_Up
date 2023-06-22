@@ -28,7 +28,7 @@ public class Main {
                 case '0' -> exit();
                 default -> signUpPage();
             }
-        }catch (StringIndexOutOfBoundsException exception){
+        }catch (StringIndexOutOfBoundsException | NullPointerException exception){
             excepting(exception);
         }
     }
@@ -48,7 +48,7 @@ public class Main {
             displayMessage("Enter password: ");
             String string1 = input(userInput);
             diary.unlock(string,string1);
-        }catch (IllegalArgumentException exception){
+        }catch (IllegalArgumentException | NullPointerException exception){
             excepting(exception);
         }
         entryPoint();
@@ -85,33 +85,39 @@ public class Main {
         optionMenu();
     }
     private static void optionMenu(){
-        String input = input(userInput);
-        switch (input.charAt(0)){
-            case '1' -> creatingGist();
-            case '2' -> editGist();
-            case '3' -> deletingGist();
-            case '4' -> searchingGist();
-            case '5' -> showingGist();
-            case '9' -> signUpPage();
-            case '0' -> exit();
-            default -> entryPoint();
+        try {
+            String input = input(userInput);
+            switch (input.charAt(0)) {
+                case '1' -> creatingGist();
+                case '2' -> editGist();
+                case '3' -> deletingGist();
+                case '4' -> searchingGist();
+                case '5' -> showingGist();
+                case '9' -> signUpPage();
+                case '0' -> exit();
+                default -> entryPoint();
+            }
+        }catch (StringIndexOutOfBoundsException | NullPointerException exception){
+            excepting(exception);
         }
     }
     private static void showingGist() {
         displayMessage("Showing all gists\n");
         displayMessage(diary.showAllGist());
+        entryPoint();
     }
-
     private static void searchingGist() {
         displayMessage("Search your gist\n");
         displayMessage("Enter title to search: ");
         try {
             String title = input(userInput);
+            displayMessage("Here is your search\n");
             displayMessage(diary.searchEntryByTitle(title));
-        }catch (IllegalArgumentException exception){
+        }catch (IllegalArgumentException | NullPointerException exception){
             excepting(exception);
         }
-
+        displayMessage("Continue here\n");
+        entryPoint();
     }
     private static void deletingGist() {
         displayMessage("Delete Gist here\n");
@@ -119,9 +125,11 @@ public class Main {
         try {
             String string = input(userInput);
             diary.deleteEntry(string);
-        }catch (IllegalArgumentException exception){
+        }catch (IllegalArgumentException | NullPointerException exception){
             excepting(exception);
         }
+        displayMessage("Delete successful\n");
+        entryPoint();
     }
     private static void editGist() {
         displayMessage("Edit Gist here\n");
@@ -131,9 +139,11 @@ public class Main {
             displayMessage("Enter Gist here: ");
             String gist = input(userInput);
             diary.updateEntryByTitle(title, gist);
-        }catch (IllegalArgumentException exception){
+        }catch (IllegalArgumentException | NullPointerException exception){
             excepting(exception);
         }
+        displayMessage("Gist edited successfully!\n");
+        entryPoint();
     }
     private static void creatingGist() {
         displayMessage("=== Create a Gist ===\n");
@@ -143,9 +153,11 @@ public class Main {
             displayMessage("Enter Gist here: ");
             String body = input(userInput);
             diary.createEntry(title, body);
-        }catch (IllegalArgumentException exception){
+        }catch (IllegalArgumentException | NullPointerException exception){
             excepting(exception);
         }
+        displayMessage("Gist created successfully!\n");
+        entryPoint();
     }
     private static String input(Scanner message){
         return message.nextLine();

@@ -22,12 +22,16 @@ public class Diary {
     public void unlock(String userName,String password) {
         if (this.userName.equals(userName) && this.password.equals(password))
             isLocked = false;
-        else throw new IllegalArgumentException("Password does not match");
+        else throw new IllegalArgumentException("Password or username does not match");
     }
     private void showAllEntryInADiary(){
         if (!isLocked) {
-            for (Entry entry : entries)
-                showAllEntry += entry.showDetails() + "\n";
+            for (int index = 0; index < entries.size(); index++) {
+                showAllEntry +=
+                        ((index + 1)+ " " + entries.get(index).showDetails() +"\n");
+            }
+//            for (Entry entry : entries)
+//                showAllEntry += entry.showDetails() + "\n";
         }else throw new IllegalArgumentException("Password is wrong");
     }
     public String showAllGist(){
@@ -47,8 +51,16 @@ public class Diary {
             Entry entry = new Entry(title, body);
             String timeCreated = String.valueOf(generateTime());
             entry.assignTimeCreated(timeCreated);
-            entries.add(entry);
-        }else throw new  IllegalArgumentException("username or password not match");
+            boolean check = titleDuplicateNotAllowed(entry);
+            if (!check) entries.add(entry);
+        }else throw new IllegalArgumentException("username or password not match");
+    }
+    private boolean titleDuplicateNotAllowed(Entry title){
+        String title1 = title.getTitle();
+        for (Entry entry : entries)
+            if (entry.getTitle().equals(title1))
+                throw new IllegalArgumentException("Cannot create Gist because title already exist");
+        return false;
     }
     public int sizeOfEntry() {
         if (!isLocked) return entries.size();
@@ -66,6 +78,7 @@ public class Diary {
     }
     public void deleteEntry(String title) {
         if (!isLocked) {
+            showAllEntry = "";
             Entry entry = findEntryByTitleInEntry(title);
             entries.remove(entry);
         }else throw new IllegalArgumentException("Diary is locked");
@@ -73,8 +86,7 @@ public class Diary {
     public void updateEntryByTitle(String title, String body) {
         if (!isLocked) {
             Entry entry = findEntryByTitleInEntry(title);
-            entry.setBody(body);
-            entries.add(entry);
+            entry.editGist(body,title);
         }else throw new IllegalArgumentException("Diary is locked");
     }
 }

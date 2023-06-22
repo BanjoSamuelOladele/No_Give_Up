@@ -42,8 +42,8 @@ public class DiaryTest {
         diary.unlock("username","password");
         assertFalse(diary.isLocked());
         diary.createEntry("title","body");
-        diary.createEntry("title","body");
-        diary.createEntry("title","body");
+        diary.createEntry("title1","body");
+        diary.createEntry("title2","body");
         assertEquals(3, diary.sizeOfEntry());
     }
     @Test public void diaryCanFindEntryByTitle(){
