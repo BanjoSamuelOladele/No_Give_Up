@@ -1,5 +1,7 @@
 package diary;
 
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -8,6 +10,8 @@ public class Diary {
     private List<Entry> entries = new ArrayList<>();
     private boolean isLocked = true;
     private String userName;
+    private LocalDateTime dateAndTimeCreated;
+    private String showAllEntry;
     public Diary(String username, String password) {
         userName = username;
         this.password = password;
@@ -19,9 +23,23 @@ public class Diary {
         if (this.password.equals(password)) isLocked = false;
         else throw new IllegalArgumentException("Password does not match");
     }
+    public String showAllEntryInADiary(String title){
+        for (Entry entry : entries)
+            showAllEntry += entry.showDetails();
+        return showAllEntry;
+    }
+    public String tineCreated(){
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("EEEE hh:mm:ssa");
+        return formatter.format(dateAndTimeCreated);
+    }
+    private LocalDateTime generateTime(){
+        return dateAndTimeCreated = LocalDateTime.now();
+    }
     public void lock() {isLocked = true;}
     public void createEntry(String title, String body) {
         Entry entry = new Entry(title, body);
+        String timeCreated = String.valueOf(generateTime());
+        entry.assignTimeCreated(timeCreated);
         entries.add(entry);
     }
     public int sizeOfEntry() {
@@ -43,5 +61,9 @@ public class Diary {
         Entry entry = findEntryByTitleInEntry(title);
         entry.setBody(body);
         entries.add(entry);
+    }
+
+    public void setTime(String time) {
+
     }
 }

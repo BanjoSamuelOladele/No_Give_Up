@@ -16,11 +16,7 @@ public class Contacting {
         this.phoneNumber = phoneNumber;
     }
     public String showDetails(){
-        return String.format("""
-                %s
-                %s
-                %s
-                """, lastName, firstName, phoneNumber);
+        return String.format("%s %s %s", lastName, firstName, phoneNumber);
     }
     public void assignKeyValue(int keyValue) {
         this.keyValue = keyValue;

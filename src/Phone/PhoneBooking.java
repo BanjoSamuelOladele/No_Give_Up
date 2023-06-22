@@ -63,7 +63,8 @@ public class PhoneBooking {
     private void checkingNamesSearchResult(String nameInput, Contacting contacting) {
         if (contacting.getName().equalsIgnoreCase(nameInput)
                 || contacting.getOtherName().equalsIgnoreCase(nameInput))
-            searchResult.add(contacting.getName() + " " + contacting.getOtherName());
+            searchResult.add(contacting.getKeyValue()+" "
+                    +contacting.getName()+" "+contacting.getOtherName());
     }
     public int searchSize() {return searchResult.size();}
     public String searchResult() {
@@ -82,7 +83,8 @@ public class PhoneBooking {
         checkPhoneNumber(phoneNumber);
         for (Contacting contacting : contactings)
             if (contacting.getPhoneNumber().equals(phoneNumber))
-                searchResult.add(contacting.getName()+" "+contacting.getOtherName());
+                searchResult.add(contacting.getKeyValue()+" "
+                        +contacting.getName()+" "+contacting.getOtherName());
         else throw new NullPointerException("Number not found");
     }
     public String  searchByUniqueKey(int uniqueKey) {
@@ -106,7 +108,9 @@ public class PhoneBooking {
         return contacting.showDetails();
     }
     public String showContacts() {
-        for (Contacting contacting : contactings) listOfAllContacts += ((contactings.indexOf(contacting)) +"\t"+ (contacting.showDetails()));
+        for (Contacting contacting : contactings)
+            listOfAllContacts +=
+                    (contacting.getKeyValue() +"\t"+ (contacting.showDetails())+"\n");
         return listOfAllContacts;
     }
 }

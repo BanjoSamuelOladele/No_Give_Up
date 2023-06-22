@@ -28,7 +28,8 @@ public class PhoneBooks {
     }
     private void checkPasswordLength(String password){
         if (password.length()< 8 || password.length() > 13)
-            throw new IllegalArgumentException("Password must between 8 - 13 characters long");
+            throw new
+                    IllegalArgumentException("Password must between 8 - 13 characters long");
     }
     private void passwordCharacterNumericErrorLead(String password){
         boolean check = checkIfPasswordContainNumberAndSpecialCharacter(password);
@@ -46,5 +47,23 @@ public class PhoneBooks {
     public void removePhone(String userName, String password) {
         if (this.password.equals(password))phoneBookings.removeIf(phoneBooking -> phoneBooking.getUserName().equals(userName));
         else throw new IllegalArgumentException("Password is Incorrect");
+    }
+    public void createContact(String userName, String firstName, String lastName, String phoneNumber) {
+        PhoneBooking phoneBooking = findByUserName(userName);
+        phoneBooking.createContact(firstName,lastName,phoneNumber);
+    }
+    public void searchContact(String userName, String name) {
+        PhoneBooking phoneBooking = findByUserName(userName);
+        phoneBooking.searchContact(name);
+    }
+    public String searchResult(String userName) {
+        PhoneBooking phoneBooking = findByUserName(userName);
+        return phoneBooking.searchResult();
+    }
+    private PhoneBooking findByUserName(String userName){
+        for (PhoneBooking phoneBooking: phoneBookings)
+            if (phoneBooking.getUserName().equals(userName))
+                return phoneBooking;
+        throw new NullPointerException("Nothing was found");
     }
 }
