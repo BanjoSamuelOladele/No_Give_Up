@@ -17,28 +17,29 @@ public class DiaryTest {
         assertTrue(diary.isLocked());
     }
     @Test public void diaryCanBeUnLockedW(){
-        diary.unlock("password");
+        diary.unlock("username","password");
         assertFalse(diary.isLocked());
     }
     @Test public void diaryCanBeLockedAfterUnlocking(){
-        diary.unlock("password");
+        diary.unlock("username","password");
         diary.lock();
         assertTrue(diary.isLocked());
     }
     @Test public void diaryCannotBeUnlockedWithAWrongPassword(){
-        assertThrows(IllegalArgumentException.class, ()-> diary.unlock("dele"));
+        assertThrows(IllegalArgumentException.class,
+                ()-> diary.unlock("username","dele"));
         assertTrue(diary.isLocked());
     }
     @Test public void diaryCanCreateEntry(){
         assertTrue(diary.isLocked());
-        diary.unlock("password");
+        diary.unlock("username","password");
         assertFalse(diary.isLocked());
         diary.createEntry("title","body");
         assertEquals(1, diary.sizeOfEntry());
     }
     @Test public void diaryCanCreateMultiple_Entries(){
         assertTrue(diary.isLocked());
-        diary.unlock("password");
+        diary.unlock("username","password");
         assertFalse(diary.isLocked());
         diary.createEntry("title","body");
         diary.createEntry("title","body");
@@ -47,14 +48,14 @@ public class DiaryTest {
     }
     @Test public void diaryCanFindEntryByTitle(){
         assertTrue(diary.isLocked());
-        diary.unlock("password");
+        diary.unlock("username","password");
         assertFalse(diary.isLocked());
         diary.createEntry("title","body");
         assertEquals("body", diary.searchEntryByTitle("title"));
     }
     @Test public void diaryCanSearchThroughEntryThroughTitle(){
         assertTrue(diary.isLocked());
-        diary.unlock("password");
+        diary.unlock("username","password");
         assertFalse(diary.isLocked());
         diary.createEntry("title","body");
         diary.createEntry("Pains,GainsAndProgress","we");
@@ -62,7 +63,7 @@ public class DiaryTest {
     }
     @Test public void diaryCanTellIfAnEntryDoesNotExist(){
         assertTrue(diary.isLocked());
-        diary.unlock("password");
+        diary.unlock("username","password");
         assertFalse(diary.isLocked());
         diary.createEntry("title","body");
         diary.createEntry("Pains,GainsAndProgress","we");
@@ -70,7 +71,7 @@ public class DiaryTest {
     }
     @Test public void diaryCanDeleteEntryThroughTitle(){
         assertTrue(diary.isLocked());
-        diary.unlock("password");
+        diary.unlock("username","password");
         assertFalse(diary.isLocked());
         diary.createEntry("title","body");
         diary.deleteEntry("title");
@@ -79,14 +80,14 @@ public class DiaryTest {
     }
     @Test public void diaryCannotDeleteAnEntryThatDoesNotExist(){
         assertTrue(diary.isLocked());
-        diary.unlock("password");
+        diary.unlock("username","password");
         assertFalse(diary.isLocked());
         diary.createEntry("title","body");
         assertThrows(NullPointerException.class, ()->diary.deleteEntry("MyBook"));
     }
     @Test public void diaryCanUpdateBodyOfAnEntryThroughTitle(){
         assertTrue(diary.isLocked());
-        diary.unlock("password");
+        diary.unlock("username","password");
         assertFalse(diary.isLocked());
         diary.createEntry("title","Ola");
         assertEquals("Ola", diary.searchEntryByTitle("title"));
@@ -98,6 +99,7 @@ public class DiaryTest {
         assertEquals(1, diaries.sizeOfDiary());
     }
     @Test public void diariesCanAddMultipleDiary(){
+
         diaries.addDiary("username", "password");
         diaries.addDiary("username", "password");
         diaries.addDiary("username", "password");

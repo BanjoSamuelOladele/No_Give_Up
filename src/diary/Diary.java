@@ -19,8 +19,9 @@ public class Diary {
     public String getPassword(){return password;}
     public String getUserName(){return userName;}
     public boolean isLocked() {return isLocked;}
-    public void unlock(String password) {
-        if (this.password.equals(password)) isLocked = false;
+    public void unlock(String userName,String password) {
+        if (this.userName.equals(userName) && this.password.equals(password))
+            isLocked = false;
         else throw new IllegalArgumentException("Password does not match");
     }
     public String showAllEntryInADiary(String title){
@@ -37,32 +38,40 @@ public class Diary {
     }
     public void lock() {isLocked = true;}
     public void createEntry(String title, String body) {
-        Entry entry = new Entry(title, body);
-        String timeCreated = String.valueOf(generateTime());
-        entry.assignTimeCreated(timeCreated);
-        entries.add(entry);
+        if (!isLocked) {
+            Entry entry = new Entry(title, body);
+            String timeCreated = String.valueOf(generateTime());
+            entry.assignTimeCreated(timeCreated);
+            entries.add(entry);
+        }else throw new  IllegalArgumentException("username or password not match");
     }
     public int sizeOfEntry() {
-        return entries.size();
+        if (!isLocked) return entries.size();
+        else throw new IllegalArgumentException("Diary is locked!");
     }
     private Entry findEntryByTitleInEntry(String title){
         for (Entry entry : entries) if (entry.getTitle().equalsIgnoreCase(title)) return entry;
         throw new NullPointerException("Entry " + title + " does not exist");
     }
     public String searchEntryByTitle(String title) {
-        Entry entry = findEntryByTitleInEntry(title);
-        return entry.getBody();
+        if (!isLocked) {
+            Entry entry = findEntryByTitleInEntry(title);
+            return entry.getBody();
+        } else throw new IllegalArgumentException("Diary is locked");
     }
     public void deleteEntry(String title) {
-        Entry entry = findEntryByTitleInEntry(title);
-        entries.remove(entry);
+        if (!isLocked) {
+            Entry entry = findEntryByTitleInEntry(title);
+            entries.remove(entry);
+        }else throw new IllegalArgumentException("Diary is locked");
     }
     public void updateEntryByTitle(String title, String body) {
-        Entry entry = findEntryByTitleInEntry(title);
-        entry.setBody(body);
-        entries.add(entry);
+        if (!isLocked) {
+            Entry entry = findEntryByTitleInEntry(title);
+            entry.setBody(body);
+            entries.add(entry);
+        }else throw new IllegalArgumentException("Diary is locked");
     }
-
     public void setTime(String time) {
 
     }

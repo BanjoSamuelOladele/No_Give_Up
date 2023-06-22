@@ -15,6 +15,7 @@ public class MainPhoneBooking {
                 2 -> Search Contact
                 3 -> Delete Contact
                 4 -> Show All Contact
+                5 -> Edit Contact
                 0 -> Exit
                 """;
         displayMessage(input);
@@ -28,10 +29,30 @@ public class MainPhoneBooking {
             case '2' -> searchContact();
             case '3' -> deleteContact();
             case '4' -> showAllContacts();
+            case '5' -> edit();
             case '0' -> exit();
             default -> entryPoint();
         }
     }
+    private static void edit() {
+        displayMessage("Edit contact \n");
+        displayMessage("Enter UniqueID");
+        try {
+            String keyId = input(userInput);
+            displayMessage("Enter firstName: ");
+            String firstName = input(userInput);
+            displayMessage("Enter last name: ");
+            String lastName = input(userInput);
+            displayMessage("Enter phone number: ");
+            String phoneNumber = input(userInput);
+            phoneBooking.modifyContact(Integer.parseInt(keyId),firstName,lastName,phoneNumber);
+        }catch (NullPointerException exception){
+            excepting(exception);
+        }
+        displayMessage("Contact edited successfully.\n");
+        searchResultPhase();
+    }
+
     private static void showAllContacts() {
         displayMessage("Viewing all contacts\n");
         displayMessage(phoneBooking.showContacts());
