@@ -24,9 +24,14 @@ public class Diary {
             isLocked = false;
         else throw new IllegalArgumentException("Password does not match");
     }
-    public String showAllEntryInADiary(String title){
-        for (Entry entry : entries)
-            showAllEntry += entry.showDetails();
+    private void showAllEntryInADiary(){
+        if (!isLocked) {
+            for (Entry entry : entries)
+                showAllEntry += entry.showDetails() + "\n";
+        }else throw new IllegalArgumentException("Password is wrong");
+    }
+    public String showAllGist(){
+        showAllEntryInADiary();;
         return showAllEntry;
     }
     public String tineCreated(){
@@ -71,8 +76,5 @@ public class Diary {
             entry.setBody(body);
             entries.add(entry);
         }else throw new IllegalArgumentException("Diary is locked");
-    }
-    public void setTime(String time) {
-
     }
 }

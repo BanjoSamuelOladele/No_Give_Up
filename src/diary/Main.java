@@ -98,20 +98,55 @@ public class Main {
         }
     }
     private static void showingGist() {
+        displayMessage("Showing all gists\n");
+        displayMessage(diary.showAllGist());
     }
 
     private static void searchingGist() {
-    }
+        displayMessage("Search your gist\n");
+        displayMessage("Enter title to search: ");
+        try {
+            String title = input(userInput);
+            displayMessage(diary.searchEntryByTitle(title));
+        }catch (IllegalArgumentException exception){
+            excepting(exception);
+        }
 
+    }
     private static void deletingGist() {
+        displayMessage("Delete Gist here\n");
+        displayMessage("Enter title of gist to delete: ");
+        try {
+            String string = input(userInput);
+            diary.deleteEntry(string);
+        }catch (IllegalArgumentException exception){
+            excepting(exception);
+        }
     }
-
     private static void editGist() {
+        displayMessage("Edit Gist here\n");
+        displayMessage("Enter title to edit Gist: ");
+        try {
+            String title = input(userInput);
+            displayMessage("Enter Gist here: ");
+            String gist = input(userInput);
+            diary.updateEntryByTitle(title, gist);
+        }catch (IllegalArgumentException exception){
+            excepting(exception);
+        }
     }
-
     private static void creatingGist() {
+        displayMessage("=== Create a Gist ===\n");
+        displayMessage("Enter Title: ");
+        try {
+            String title = input(userInput);
+            displayMessage("Enter Gist here: ");
+            String body = input(userInput);
+            diary.createEntry(title, body);
+        }catch (IllegalArgumentException exception){
+            excepting(exception);
+        }
     }
-
     private static String input(Scanner message){
         return message.nextLine();
     }

@@ -19,7 +19,8 @@ public class Entry {
     public String showDetails(){
         return String.format("""
                 Title: %s
+                Body: %s
                 Time Created: %s
-                """, title, timeCreated);
+                """, title,body, timeCreated);
     }
 }

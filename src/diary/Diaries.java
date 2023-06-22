@@ -11,7 +11,7 @@ public class Diaries {
     public void addDiary(String username, String password) {
         Diary newDiary = new Diary(username, password);
         String time = String.valueOf(generatedTime());
-        newDiary.setTime(time);
+//        newDiary.setTime(time);
         diary.add(newDiary);
     }
     public String showDate(){
