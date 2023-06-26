@@ -135,8 +135,6 @@ public class PhoneBookingTest {
         phoneBooking.createContact("firstName", "lastName", "08063587905");
         assertEquals(1, phoneBooking.size());
         String expected = "lastName firstName 08063587905";
-        System.out.println(expected);
-        System.out.println(phoneBooking.searchByUniqueKey(1));
         assertEquals(expected, phoneBooking.searchByUniqueKey(1));
     }
     @Test public void searchByKeyValue() {
@@ -150,8 +148,6 @@ public class PhoneBookingTest {
         phoneBooking.createContact("firstName", "lastName", "20202020202");
         assertEquals(5, phoneBooking.size());
         String expected = "lastName firstName 08085678906";
-        System.out.println(expected);
-        System.out.println("DD "+phoneBooking.searchByUniqueKey(3));
         assertEquals(expected, phoneBooking.searchByUniqueKey(3));
     }
     @Test public void phoneBookCanDeleteContact(){
