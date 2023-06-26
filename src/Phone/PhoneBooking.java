@@ -1,9 +1,5 @@
 package Phone;
-
-import Contacts.Contact;
-
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 
@@ -39,7 +35,9 @@ public class PhoneBooking {
         contactings.add(contacting);
     }
     private void checkLengthOfPhoneNumber(String phoneNumber){
-        if (phoneNumber.length() != 11 && phoneNumber.length() != 13) throw new IllegalArgumentException("PhoneNumber must be between 11 and 13 digits long");
+        if (phoneNumber.length() != 11 && phoneNumber.length() != 13)
+            throw new
+                    IllegalArgumentException("PhoneNumber must be between 11 and 13 digits long");
     }
     public int size() {
         return contactings.size();
@@ -52,7 +50,7 @@ public class PhoneBooking {
     public void searchContact(String input){
         checkIfItContainsDigits(input);
         if (searchResult.size() == 0 ){
-            throw new NullPointerException("Name not found");
+            throw new NullPointerException("Name or number not found");
         }
     }
     private void searchByName(String nameInput) {
@@ -89,7 +87,8 @@ public class PhoneBooking {
     }
     public String  searchByUniqueKey(int uniqueKey) {
         for (Contacting contacting : contactings)
-            if (contacting.getKeyValue() == uniqueKey) return contacting.showDetails();
+            if (contacting.getKeyValue() == uniqueKey)
+                return contacting.showDetails();
         throw new NullPointerException("Not found");
     }
     private Contacting searchUniqueID(int uniqueID){
@@ -99,10 +98,12 @@ public class PhoneBooking {
         throw new NullPointerException("Invalid input");
     }
     public void deleteContactByUniqueNumber(int uniqueID) {
+        listOfAllContacts = "";
         Contacting contacting = searchUniqueID(uniqueID);
         contactings.remove(contacting);
     }
-    public String modifyContact(int keyValue, String firstName, String lastName, String phoneNumber) {
+    public String modifyContact(int keyValue, String firstName,
+                                String lastName, String phoneNumber) {
         Contacting contacting = searchUniqueID(keyValue);
         contacting.edit(firstName,lastName,phoneNumber);
         return contacting.showDetails();

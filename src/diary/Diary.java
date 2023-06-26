@@ -35,7 +35,7 @@ public class Diary {
         }else throw new IllegalArgumentException("Password is wrong");
     }
     public String showAllGist(){
-        showAllEntryInADiary();;
+        showAllEntryInADiary();
         return showAllEntry;
     }
     public String tineCreated(){

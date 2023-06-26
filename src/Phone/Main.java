@@ -1,12 +1,6 @@
 package Phone;
-
-import diary.Entry;
-
 import java.util.InputMismatchException;
 import java.util.Scanner;
-
-import static java.lang.System.exit;
-import static java.lang.System.in;
 
 public class Main {
     private static Scanner userInput = new Scanner(System.in);
